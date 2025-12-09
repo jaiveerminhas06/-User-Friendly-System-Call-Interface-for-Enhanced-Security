@@ -1,549 +1,446 @@
-# User-Friendly System Call Interface for Enhanced Security
+# 🔐 User-Friendly System Call Interface for Enhanced Security
 
-## 🎓 Operating Systems Course Project
+A modern, secure web-based system call interface built with Next.js that demonstrates operating system concepts through practical implementation. This project provides a controlled environment for executing system calls with role-based access control, comprehensive logging, and real-time monitoring.
 
-A comprehensive web-based system that simulates a secure OS system call layer with authentication, role-based access control, and detailed logging. Built for educational purposes to demonstrate OS concepts including system calls, process management, security policies, and access control.
+![Next.js](https://img.shields.io/badge/Next.js-14.2-black?style=flat&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat&logo=typescript)
+![Prisma](https://img.shields.io/badge/Prisma-5.22-2D3748?style=flat&logo=prisma)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat)
 
 ---
 
 ## 📋 Table of Contents
 
-- [Project Overview](#project-overview)
-- [Tech Stack](#tech-stack)
-- [Features](#features)
-- [Architecture](#architecture)
-- [Security Model](#security-model)
-- [Installation](#installation)
-- [Usage](#usage)
-- [API Documentation](#api-documentation)
-- [System Calls](#system-calls)
-- [Database Schema](#database-schema)
-- [Screenshots](#screenshots)
-- [Future Enhancements](#future-enhancements)
-
----
-
-## 🎯 Project Overview
-
-This project implements a **secure, web-based interface** that acts as a controlled gateway to perform abstracted "system-call-like" operations. Unlike traditional OS kernel modifications, this system simulates realistic OS behaviors within a secure Node.js environment.
-
-### Key Concepts Demonstrated
-
-- **System Call Abstraction**: Safe implementation of file system, process, and system info operations
-- **Authentication & Authorization**: Multi-role user management with NextAuth.js
-- **Policy Engine**: Role-based access control (RBAC) for system call execution
-- **Comprehensive Logging**: Every action is logged with detailed metadata
-- **Security**: Input validation, path traversal prevention, command whitelisting, rate limiting
-
----
-
-## 🛠 Tech Stack
-
-| Category | Technology |
-|----------|-----------|
-| **Framework** | Next.js 14 (App Router) |
-| **Language** | TypeScript (strict mode) |
-| **Database** | SQLite with Prisma ORM |
-| **Authentication** | NextAuth.js (Credentials) |
-| **Security** | bcryptjs, Zod validation |
-| **UI** | Tailwind CSS + ShadCN UI |
-| **Charts** | Recharts |
-| **System Ops** | Node.js fs, os, child_process |
+- [Features](#-features)
+- [System Calls](#-system-calls)
+- [Technology Stack](#-technology-stack)
+- [Prerequisites](#-prerequisites)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Project Structure](#-project-structure)
+- [Security Features](#-security-features)
+- [API Documentation](#-api-documentation)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
 ## ✨ Features
 
-### 1. Authentication System
-- User registration with email validation
-- Secure login with bcrypt password hashing
-- JWT-based session management
-- Role-based access (ADMIN, POWER_USER, VIEWER)
+### 🔐 **Authentication & Authorization**
+- Secure user authentication with NextAuth.js
+- Role-based access control (RBAC) with three permission levels
+- JWT session management with secure token handling
+- Login attempt tracking and rate limiting
 
-### 2. System Call Interface
-- **File System Operations**
-  - `listDirectory`: Browse directory contents
-  - `readFile`: Read file contents
-  - `writeFile`: Create/modify files
-  - `deleteFile`: Remove files (admin only)
+### 🖥️ **System Call Interface**
+- **7 System Calls** across 3 categories:
+  - File System Operations (list, read, write, delete)
+  - Process Management (list processes, execute commands)
+  - System Information (CPU, memory, OS details)
+- Real-time execution with parameter validation
+- Sandboxed environment with path traversal prevention
+- Command whitelisting for safe execution
 
-- **Process Operations**
-  - `listProcesses`: View running processes
-  - `runSafeCommand`: Execute whitelisted commands
+### 📊 **Monitoring & Logging**
+- Comprehensive audit trail for all operations
+- Real-time dashboard with statistics and charts
+- Log filtering by user, role, status, and date range
+- Performance metrics (execution time tracking)
 
-- **System Information**
-  - `getSystemInfo`: CPU, memory, OS details
+### 👥 **Admin Panel**
+- User management (Create, Read, Update, Delete)
+- Role assignment and permission control
+- Policy configuration per role and system call
+- Rate limit customization
 
-### 3. Policy Management (Admin)
-- Configure role-based permissions per system call
-- Enable/disable system calls globally
-- Set rate limits per role
-- Manage allowed roles for each operation
-
-### 4. User Management (Admin)
-- Create, update, delete users
-- Assign roles (ADMIN, POWER_USER, VIEWER)
-- View user activity statistics
-- Activate/deactivate accounts
-
-### 5. Monitoring & Logging
-- Real-time dashboard with statistics
-- Detailed execution logs with filters
-- Success/denied/error tracking
-- Activity graphs by role and system call
-- Client IP and user agent logging
+### 🎨 **Modern UI/UX**
+- Clean, responsive design with Tailwind CSS
+- ShadCN UI component library
+- Interactive charts with Recharts
+- Mobile-friendly interface
 
 ---
 
-## 🏗 Architecture
+## 🚀 System Calls
 
+| Category | System Call | Description | Parameters |
+|----------|------------|-------------|------------|
+| **File System** | `listDirectory` | List contents of a directory | `path` |
+| | `readFile` | Read file contents | `path` |
+| | `writeFile` | Create or modify a file | `path`, `content` |
+| | `deleteFile` | Remove a file | `path` |
+| **Process** | `listProcesses` | View running processes | - |
+| | `runSafeCommand` | Execute whitelisted commands | `command` |
+| **System Info** | `getSystemInfo` | Get CPU, memory, OS info | - |
+
+---
+
+## 🛠️ Technology Stack
+
+### **Frontend**
+- **Next.js 14** - React framework with App Router
+- **TypeScript** - Type-safe development
+- **Tailwind CSS** - Utility-first styling
+- **ShadCN UI** - Beautiful component library
+- **Recharts** - Data visualization
+
+### **Backend**
+- **Next.js API Routes** - Serverless API endpoints
+- **NextAuth.js** - Authentication solution
+- **Prisma ORM** - Type-safe database client
+- **SQLite** - Lightweight database
+- **Zod** - Schema validation
+
+### **Security**
+- **bcryptjs** - Password hashing
+- **Node.js crypto** - Secret key generation
+- Input sanitization and validation
+- Path traversal prevention
+- Rate limiting
+
+---
+
+## 📦 Prerequisites
+
+Before installation, ensure you have:
+
+- **Node.js** 20.x or higher ([Download](https://nodejs.org/))
+- **npm** 10.x or higher (comes with Node.js)
+- **Git** (for cloning) ([Download](https://git-scm.com/))
+
+Verify installations:
+```bash
+node --version  # Should show v20.x or higher
+npm --version   # Should show 10.x or higher
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                        CLIENT (Browser)                      │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌────────────┐ │
-│  │  Login   │  │Dashboard │  │ Syscalls │  │   Admin    │ │
-│  └──────────┘  └──────────┘  └──────────┘  └────────────┘ │
-└────────────────────────┬────────────────────────────────────┘
-                         │ HTTPS/REST API
-┌────────────────────────┴────────────────────────────────────┐
-│                    NEXT.JS SERVER                            │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │                   Middleware                          │  │
-│  │    (Authentication, Authorization, Route Protection)  │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────┐  ┌──────────────┐  ┌─────────────────┐  │
-│  │ API Routes   │  │  Auth Logic  │  │  Policy Engine  │  │
-│  │ - /syscall   │  │  (NextAuth)  │  │                 │  │
-│  │ - /logs      │  │              │  │  - Role checks  │  │
-│  │ - /admin/*   │  │              │  │  - Rate limits  │  │
-│  └──────────────┘  └──────────────┘  └─────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │             System Call Executor                      │  │
-│  │  ┌────────────┐ ┌────────────┐ ┌─────────────────┐  │  │
-│  │  │File System │ │  Process   │ │  System Info    │  │  │
-│  │  │Operations  │ │  Mgmt      │ │  Retrieval      │  │  │
-│  │  └────────────┘ └────────────┘ └─────────────────┘  │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                           │                                  │
-│                           ▼                                  │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │              Logging & Audit System                   │  │
-│  └──────────────────────────────────────────────────────┘  │
-└────────────────────────┬────────────────────────────────────┘
-                         │
-┌────────────────────────┴────────────────────────────────────┐
-│                   SQLite DATABASE (Prisma)                   │
-│  ┌─────────┐ ┌──────────────┐ ┌────────┐ ┌──────────────┐ │
-│  │  Users  │ │ SystemCalls  │ │ Policy │ │    Logs      │ │
-│  └─────────┘ └──────────────┘ └────────┘ └──────────────┘ │
-└─────────────────────────────────────────────────────────────┘
+
+---
+
+## 🚀 Installation
+
+### **1. Clone the Repository**
+```bash
+git clone https://github.com/jaiveerminhas06/-User-Friendly-System-Call-Interface-for-Enhanced-Security.git
+cd -User-Friendly-System-Call-Interface-for-Enhanced-Security
 ```
 
----
-
-## 🔐 Security Model
-
-### 1. Authentication Layer
-- Password hashing with bcrypt (12 rounds)
-- JWT sessions with HttpOnly cookies
-- Automatic session expiration (24 hours)
-
-### 2. Authorization Layer
-- Role-Based Access Control (RBAC)
-- Middleware-enforced route protection
-- Server-side permission checks on every API call
-
-### 3. Input Validation
-- Zod schema validation for all inputs
-- Path traversal prevention (`../` blocked)
-- Command whitelisting for process execution
-- File operations restricted to safe directory
-
-### 4. Rate Limiting
-- Failed login attempt tracking
-- Configurable per-role syscall limits
-- IP-based rate limiting
-
-### 5. Audit Trail
-- Every operation logged with:
-  - User identity and role
-  - Timestamp and execution time
-  - Parameters (sanitized)
-  - Result status
-  - Client IP and user agent
-  - Error messages
-
----
-
-## 📦 Installation
-
-### Prerequisites
-- Node.js 18+ installed
-- npm or yarn package manager
-
-### Step 1: Clone & Install
-
-```powershell
-cd "C:\Users\Jaiveer Minhas\Desktop\SysCall Interface"
+### **2. Install Dependencies**
+```bash
 npm install
 ```
 
-### Step 2: Configure Environment
+### **3. Environment Setup**
+The `.env` file is pre-configured. For production, generate a new `NEXTAUTH_SECRET`:
 
-Edit `.env` file:
+**Windows PowerShell:**
+```powershell
+$bytes = New-Object byte[] 32; (New-Object Security.Cryptography.RNGCryptoServiceProvider).GetBytes($bytes); [Convert]::ToBase64String($bytes)
+```
+
+**Linux/Mac:**
+```bash
+openssl rand -base64 32
+```
+
+Then update `.env`:
 ```env
-DATABASE_URL="file:./dev.db"
-NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="your-super-secret-key-min-32-chars"
-SAFE_ROOT_DIR="./safe-root"
-MAX_LOGIN_ATTEMPTS=5
-LOGIN_TIMEOUT_MINUTES=15
+NEXTAUTH_SECRET="your-generated-secret-here"
 ```
 
-### Step 3: Initialize Database
-
-```powershell
+### **4. Database Setup**
+```bash
+# Generate Prisma Client
 npx prisma generate
+
+# Run migrations and create database
 npx prisma migrate dev --name init
+
+# Seed with test data
+npm run db:seed
 ```
 
-### Step 4: Seed Database (Optional)
-
-Create `prisma/seed.ts`:
-```typescript
-import { PrismaClient } from '@prisma/client';
-import { hashPassword } from '../src/lib/auth';
-import { initializeDefaultPolicies } from '../src/lib/policies';
-import { initializeSafeRoot } from '../src/lib/syscalls';
-
-const prisma = new PrismaClient();
-
-async function main() {
-  // Initialize safe directory
-  await initializeSafeRoot();
-  
-  // Create admin user
-  const adminPassword = await hashPassword('admin123');
-  await prisma.user.create({
-    data: {
-      email: 'admin@syscall.local',
-      name: 'Admin User',
-      password: adminPassword,
-      role: 'ADMIN',
-    },
-  });
-
-  // Create power user
-  const powerPassword = await hashPassword('power123');
-  await prisma.user.create({
-    data: {
-      email: 'power@syscall.local',
-      name: 'Power User',
-      password: powerPassword,
-      role: 'POWER_USER',
-    },
-  });
-
-  // Create viewer
-  const viewerPassword = await hashPassword('viewer123');
-  await prisma.user.create({
-    data: {
-      email: 'viewer@syscall.local',
-      name: 'Viewer User',
-      password: viewerPassword,
-      role: 'VIEWER',
-    },
-  });
-
-  // Initialize system calls and policies
-  await initializeDefaultPolicies();
-  
-  console.log('✅ Database seeded successfully');
-}
-
-main()
-  .catch(console.error)
-  .finally(() => prisma.$disconnect());
-```
-
-Run seed:
-```powershell
-npx prisma db seed
-```
-
-### Step 5: Start Development Server
-
-```powershell
+### **5. Start Development Server**
+```bash
 npm run dev
 ```
 
-Visit: `http://localhost:3000`
-
-**Default Credentials:**
-- Admin: `admin@syscall.local` / `admin123`
-- Power User: `power@syscall.local` / `power123`
-- Viewer: `viewer@syscall.local` / `viewer123`
+Visit **http://localhost:3000** 🎉
 
 ---
 
-## 🚀 Usage
+## 🔑 Usage
 
-### For Regular Users
+### **Test Credentials**
 
-1. **Login**: Navigate to `/login` and authenticate
-2. **Dashboard**: View your activity statistics and recent calls
-3. **System Calls**: Execute available operations based on your role
-4. **Logs**: View your execution history
+| Role | Email | Password | Permissions |
+|------|-------|----------|-------------|
+| **Admin** | `admin@syscall.local` | `admin123` | Full access to all features |
+| **Power User** | `power@syscall.local` | `power123` | Most system calls enabled |
+| **Viewer** | `viewer@syscall.local` | `viewer123` | Limited read-only access |
 
-### For Administrators
+### **Quick Start Guide**
 
-All regular features plus:
-- **User Management**: Create, modify, delete users at `/admin/users`
-- **Policy Management**: Configure permissions at `/admin/policies`
-- **Enable/Disable Calls**: Toggle system call availability
-- **View All Logs**: Monitor system-wide activity
+1. **Login** with any test account at http://localhost:3000
+2. **Dashboard** - View system statistics and activity
+3. **System Calls** - Execute operations based on your role
+4. **Logs** - Review audit trail of all actions
+5. **Admin Panel** (Admin only) - Manage users and policies
 
----
-
-## 📚 API Documentation
-
-### Authentication
-
-**POST** `/api/register`
-```json
-{
-  "email": "user@example.com",
-  "name": "John Doe",
-  "password": "password123",
-  "confirmPassword": "password123"
-}
+### **Example: Execute a System Call**
+```typescript
+// Navigate to /syscalls
+// Select "getSystemInfo" from dropdown
+// Click "Execute"
+// View results with CPU, memory, and OS details
 ```
 
-**POST** `/api/auth/signin` (NextAuth endpoint)
-
-### System Calls
-
-**GET** `/api/syscall`
-- Returns available system calls for authenticated user
-
-**POST** `/api/syscall`
-```json
-{
-  "syscallName": "listDirectory",
-  "parameters": {
-    "path": "/example"
-  }
-}
-```
-
-### Logs
-
-**GET** `/api/logs?status=SUCCESS&limit=50&offset=0`
-- Query parameters: `status`, `syscallName`, `role`, `startDate`, `endDate`, `limit`, `offset`
-
-### Admin
-
-**GET** `/api/admin/users` (Admin only)
-**POST** `/api/admin/users` (Admin only)
-**PATCH** `/api/admin/users` (Admin only)
-**DELETE** `/api/admin/users?id={userId}` (Admin only)
-
-**GET** `/api/admin/policies` (Admin only)
-**POST** `/api/admin/policies` (Admin only)
-**PATCH** `/api/admin/policies` (Admin only)
-
 ---
 
-## 🔧 System Calls
-
-### File System
-
-| Call | Description | Roles | Parameters |
-|------|-------------|-------|------------|
-| `listDirectory` | List directory contents | All | `path` |
-| `readFile` | Read file contents | All | `path` |
-| `writeFile` | Write to file | Admin, Power | `path`, `content` |
-| `deleteFile` | Delete file | Admin | `path` |
-
-### Process Operations
-
-| Call | Description | Roles | Parameters |
-|------|-------------|-------|------------|
-| `listProcesses` | View running processes | Admin, Power | None |
-| `runSafeCommand` | Execute whitelisted command | Admin | `command` |
-
-### System Information
-
-| Call | Description | Roles | Parameters |
-|------|-------------|-------|------------|
-| `getSystemInfo` | Get CPU, memory, OS info | All | None |
-
----
-
-## 🗄 Database Schema
-
-### Models
-
-- **User**: Authentication and profile information
-- **SystemCall**: Available system call definitions
-- **Policy**: Role-to-syscall permission mappings
-- **SystemCallLog**: Execution audit trail
-- **LoginAttempt**: Authentication tracking
-- **Configuration**: System settings
-
-See `prisma/schema.prisma` for full schema.
-
----
-
-## 📸 Screenshots
-
-_[Add screenshots of your application here]_
-
-### Login Page
-![Login]()
-
-### Dashboard
-![Dashboard]()
-
-### System Calls Interface
-![System Calls]()
-
-### Admin Panel
-![Admin Panel]()
-
----
-
-## 🎯 Learning Outcomes
-
-This project demonstrates understanding of:
-
-1. **Operating System Concepts**
-   - System call interface and abstraction
-   - Process management simulation
-   - File system operations
-   - Security and access control
-
-2. **Software Engineering**
-   - Full-stack web development
-   - RESTful API design
-   - Database modeling
-   - Authentication/Authorization
-
-3. **Security Principles**
-   - Secure password storage
-   - Input validation and sanitization
-   - Principle of least privilege
-   - Audit logging
-
----
-
-## 🚀 Future Enhancements
-
-- [ ] Real-time notifications using WebSockets
-- [ ] Advanced process monitoring with `ps-node`
-- [ ] File upload/download functionality
-- [ ] Export logs as CSV/PDF
-- [ ] Two-factor authentication (2FA)
-- [ ] Dark mode theme
-- [ ] Advanced analytics dashboard
-- [ ] Docker containerization
-- [ ] Multi-tenancy support
-- [ ] Scheduled system call execution (cron-like)
-- [ ] API rate limiting middleware
-- [ ] Internationalization (i18n)
-
----
-
-## 📝 Project Structure
+## 📁 Project Structure
 
 ```
 SysCall Interface/
 ├── prisma/
-│   └── schema.prisma          # Database schema
+│   ├── schema.prisma          # Database schema (6 models)
+│   ├── seed.ts                # Database seeding script
+│   └── migrations/            # Database migration files
 ├── src/
 │   ├── app/
-│   │   ├── (auth)/
-│   │   │   ├── login/         # Login page
-│   │   │   └── register/      # Registration page
-│   │   ├── admin/
+│   │   ├── (auth)/            # Authentication pages
+│   │   │   ├── login/
+│   │   │   └── register/
+│   │   ├── admin/             # Admin panel
 │   │   │   ├── users/         # User management
 │   │   │   └── policies/      # Policy management
-│   │   ├── api/
+│   │   ├── api/               # API routes
 │   │   │   ├── auth/          # NextAuth endpoints
-│   │   │   ├── syscall/       # System call API
-│   │   │   ├── logs/          # Logs API
-│   │   │   └── admin/         # Admin APIs
-│   │   ├── dashboard/         # Dashboard page
-│   │   ├── syscalls/          # System calls UI
-│   │   ├── logs/              # Logs viewer
-│   │   ├── layout.tsx         # Root layout
-│   │   ├── page.tsx           # Home redirect
-│   │   └── globals.css        # Global styles
+│   │   │   ├── syscall/       # System call execution
+│   │   │   ├── logs/          # Log retrieval
+│   │   │   ├── dashboard/     # Dashboard stats
+│   │   │   └── admin/         # Admin operations
+│   │   ├── dashboard/         # Main dashboard
+│   │   ├── syscalls/          # System call interface
+│   │   ├── logs/              # Log viewer
+│   │   └── layout.tsx         # Root layout
 │   ├── components/
-│   │   ├── ui/                # ShadCN components
-│   │   ├── navigation.tsx     # Nav bar
+│   │   ├── ui/                # ShadCN UI components
+│   │   ├── navigation.tsx     # Navigation bar
 │   │   └── providers.tsx      # Session provider
 │   ├── lib/
-│   │   ├── auth.ts            # Auth utilities
+│   │   ├── auth.ts            # Auth utilities & config
 │   │   ├── policies.ts        # Policy engine
-│   │   ├── syscalls.ts        # Syscall executor
-│   │   ├── logging.ts         # Logging utilities
+│   │   ├── syscalls.ts        # System call executor
+│   │   ├── logging.ts         # Logging system
 │   │   └── utils.ts           # Helper functions
-│   ├── types/
-│   │   └── next-auth.d.ts     # Type definitions
-│   └── middleware.ts          # Route protection
+│   └── types/
+│       └── next-auth.d.ts     # NextAuth type definitions
 ├── .env                       # Environment variables
-├── .gitignore
-├── package.json
-├── tsconfig.json
-├── tailwind.config.ts
-├── next.config.js
-└── README.md
+├── package.json               # Dependencies & scripts
+├── tsconfig.json              # TypeScript config
+├── tailwind.config.ts         # Tailwind config
+└── README.md                  # This file
 ```
+
+---
+
+## 🔒 Security Features
+
+### **1. Authentication Security**
+- ✅ Password hashing with bcrypt (12 rounds)
+- ✅ JWT session tokens with expiration (24 hours)
+- ✅ Secure session storage
+- ✅ CSRF protection via NextAuth
+
+### **2. Authorization Controls**
+- ✅ Role-based access control (RBAC)
+- ✅ Policy engine for fine-grained permissions
+- ✅ Server-side authorization checks
+- ✅ Middleware route protection
+
+### **3. Input Validation**
+- ✅ Zod schema validation for all inputs
+- ✅ Type-safe parameter checking
+- ✅ SQL injection prevention (Prisma ORM)
+- ✅ XSS protection
+
+### **4. System Call Safety**
+- ✅ Path traversal prevention (`../` sanitization)
+- ✅ Safe directory restrictions
+- ✅ Command whitelisting (only: dir, echo, date, time)
+- ✅ No arbitrary command execution
+
+### **5. Rate Limiting**
+- ✅ Login attempt tracking (5 attempts max)
+- ✅ Per-role execution limits
+- ✅ IP-based restrictions
+- ✅ Configurable thresholds
+
+### **6. Audit & Monitoring**
+- ✅ Complete audit trail for all actions
+- ✅ User action logging with timestamps
+- ✅ Failed attempt tracking
+- ✅ IP address and user agent capture
+
+---
+
+## 📡 API Documentation
+
+### **Authentication**
+```typescript
+POST /api/auth/callback/credentials
+Body: { email: string, password: string }
+Response: { user: { id, email, name, role } }
+```
+
+### **System Calls**
+```typescript
+// List available system calls
+GET /api/syscall
+Response: SystemCall[]
+
+// Execute a system call
+POST /api/syscall
+Body: { 
+  syscallName: string, 
+  parameters?: { path?: string, content?: string, command?: string } 
+}
+Response: { 
+  success: boolean, 
+  data?: any, 
+  error?: string 
+}
+```
+
+### **Logs**
+```typescript
+GET /api/logs?limit=50&status=SUCCESS&userId=xxx&startDate=xxx&endDate=xxx
+Response: { 
+  logs: SystemCallLog[], 
+  total: number 
+}
+```
+
+### **Dashboard**
+```typescript
+GET /api/dashboard
+Response: {
+  totalCalls: number,
+  successRate: number,
+  deniedCalls: number,
+  recentLogs: SystemCallLog[],
+  byRole: { role: string, count: number }[],
+  bySyscall: { name: string, count: number }[]
+}
+```
+
+### **Admin - Users**
+```typescript
+GET /api/admin/users          // List all users
+POST /api/admin/users         // Create user
+PATCH /api/admin/users        // Update user
+DELETE /api/admin/users       // Delete user
+```
+
+### **Admin - Policies**
+```typescript
+GET /api/admin/policies       // List all policies
+POST /api/admin/policies      // Create/update policy
+PATCH /api/admin/policies     // Toggle syscall status
+```
+
+---
+
+## 📊 Database Schema
+
+### **Models (6 total)**
+1. **User** - User accounts with roles and authentication
+2. **SystemCall** - Available system call definitions
+3. **Policy** - Role-permission mappings with rate limits
+4. **SystemCallLog** - Complete execution audit trail
+5. **LoginAttempt** - Authentication history for rate limiting
+6. **Configuration** - System-wide settings
+
+### **Entity Relationships**
+- User → SystemCallLog (one-to-many)
+- User → LoginAttempt (one-to-many)
+- SystemCall → Policy (one-to-many)
+- SystemCall → SystemCallLog (one-to-many)
+
+---
+
+## 🎓 Educational Value
+
+This project demonstrates understanding of:
+
+1. **Operating System Concepts**
+   - System call interface design
+   - Process management fundamentals
+   - File system operations
+   - Security and access control
+
+2. **Software Engineering**
+   - Full-stack application architecture
+   - RESTful API design
+   - Database modeling and relationships
+   - Authentication and authorization
+
+3. **Security Practices**
+   - RBAC implementation
+   - Input validation and sanitization
+   - Audit logging
+   - Rate limiting strategies
 
 ---
 
 ## 🤝 Contributing
 
-This is an educational project. Feel free to fork and extend for learning purposes.
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
-## 📄 License
+## 📝 License
 
-This project is created for educational purposes as part of an Operating Systems course.
-
----
-
-## 👨‍💻 Author
-
-**Jaiveer Minhas**
-- Course: Operating Systems
-- Project: User-Friendly System Call Interface for Enhanced Security
-- Year: 2025
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 ## 🙏 Acknowledgments
 
-- Next.js and React documentation
-- Prisma ORM documentation
-- NextAuth.js for authentication patterns
-- ShadCN UI for component library
-- Operating Systems course materials
+- **Next.js Team** - For the amazing framework
+- **Prisma** - For the excellent ORM
+- **ShadCN** - For beautiful UI components
+- **Vercel** - For hosting and deployment
 
 ---
 
-## 📞 Support
+## 📧 Contact
 
-For questions or issues:
-1. Check the documentation above
-2. Review code comments in source files
-3. Test with provided demo credentials
-4. Verify environment configuration
+**Jaiveer Minhas**
+- GitHub: [@jaiveerminhas06](https://github.com/jaiveerminhas06)
+- Project Link: [User-Friendly System Call Interface](https://github.com/jaiveerminhas06/-User-Friendly-System-Call-Interface-for-Enhanced-Security)
 
 ---
 
-**Built with ❤️ for learning Operating Systems concepts**
+## 🚀 Deployment
+
+### **Deploy to Vercel**
+
+1. Push to GitHub
+2. Import project to Vercel
+3. Add environment variables
+4. Deploy!
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/jaiveerminhas06/-User-Friendly-System-Call-Interface-for-Enhanced-Security)
+
+---
+
+**⭐ If you found this project helpful, please give it a star!**
+
+Built with ❤️ for Operating Systems Course Project
