@@ -1,0 +1,126 @@
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User Roles: ADMIN, POWER_USER, VIEWER
+// System Call Status: SUCCESS, DENIED, ERROR
+
+// User Model - Stores authenticated users
+model User {
+  id            String          @id @default(cuid())
+  email         String          @unique
+  name          String
+  password      String
+  role          String          @default("VIEWER")
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  lastLogin     DateTime?
+  isActive      Boolean         @default(true)
+  
+  // Relations
+  systemCallLogs SystemCallLog[]
+  loginAttempts  LoginAttempt[]
+  
+  @@map("users")
+}
+
+// System Call Model - Defines available system calls
+model SystemCall {
+  id              String    @id @default(cuid())
+  name            String    @unique
+  description     String
+  category        String    // FILE_SYSTEM, PROCESS, SYSTEM_INFO
+  enabled         Boolean   @default(true)
+  allowedRoles    String    // JSON array stored as string: ["ADMIN", "POWER_USER"]
+  requiresParams  Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Relations
+  logs            SystemCallLog[]
+  policies        Policy[]
+  
+  @@map("system_calls")
+}
+
+// Policy Model - Links roles to system calls with specific permissions
+model Policy {
+  id              String      @id @default(cuid())
+  role            String
+  systemCallId    String
+  allowed         Boolean     @default(true)
+  maxExecutions   Int?        // Max executions per hour (null = unlimited)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  // Relations
+  systemCall      SystemCall  @relation(fields: [systemCallId], references: [id], onDelete: Cascade)
+  
+  @@unique([role, systemCallId])
+  @@map("policies")
+}
+
+// System Call Log Model - Logs every system call attempt
+model SystemCallLog {
+  id              String      @id @default(cuid())
+  userId          String
+  role            String
+  syscallName     String
+  syscallId       String?
+  parameters      String?     // JSON stored as string
+  status          String
+  output          String?     // Result or output data
+  errorMessage    String?
+  clientIp        String?
+  userAgent       String?
+  executionTime   Int?        // Milliseconds
+  timestamp       DateTime    @default(now())
+  
+  // Relations
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  systemCall      SystemCall? @relation(fields: [syscallId], references: [id], onDelete: SetNull)
+  
+  @@index([userId])
+  @@index([syscallName])
+  @@index([status])
+  @@index([timestamp])
+  @@map("system_call_logs")
+}
+
+// Login Attempt Model - Track failed login attempts for rate limiting
+model LoginAttempt {
+  id          String    @id @default(cuid())
+  userId      String?
+  email       String
+  successful  Boolean
+  ipAddress   String
+  userAgent   String?
+  timestamp   DateTime  @default(now())
+  
+  // Relations
+  user        User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([email])
+  @@index([ipAddress])
+  @@index([timestamp])
+  @@map("login_attempts")
+}
+
+// Configuration Model - Store system-wide settings
+model Configuration {
+  id              String    @id @default(cuid())
+  key             String    @unique
+  value           String
+  description     String?
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("configurations")
+}
