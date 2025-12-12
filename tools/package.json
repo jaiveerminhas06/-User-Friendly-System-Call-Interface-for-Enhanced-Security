@@ -1,0 +1,13 @@
+{
+  "name": "project-analysis-tools",
+  "version": "1.0.0",
+  "description": "Project analysis and summary generation tools",
+  "scripts": {
+    "analyze": "ts-node extract_project_summary.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  }
+}
